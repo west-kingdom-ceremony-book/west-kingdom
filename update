@@ -1,0 +1,17 @@
+#! /bin/sh
+
+ mkdir -p  ../epub
+ 
+
+ for MODE in apple android; do 
+   EPUB=../epub/west-kingdom-ceremony-$MODE.epub
+   rm $EPUB
+   
+   perl ../scripts/wiki-to-book -c config-$MODE.yaml
+   
+   java -jar ../tools/epubcheck-3.0.1/epubcheck-3.0.1.jar $EPUB || exit 1
+   
+   scp $EPUB gigo.com:/var/www/stuff.gigo.com/
+   cp $EPUB ~/Dropbox/
+   open -a iBooks $EPUB
+ done
